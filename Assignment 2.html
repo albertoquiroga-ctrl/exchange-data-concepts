@@ -9186,6 +9186,10 @@ threshold scenario for business-sensitive recall.</p>
 <span class="n">test_pred</span> <span class="o">=</span> <span class="n">log_reg_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_scaled</span><span class="p">)</span>
 <span class="n">test_proba</span> <span class="o">=</span> <span class="n">log_reg_model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test_scaled</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">]</span>
 
+<span class="n">baseline_test_counts</span> <span class="o">=</span> <span class="n">y_test</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<span class="n">baseline_test_label</span> <span class="o">=</span> <span class="n">baseline_test_counts</span><span class="o">.</span><span class="n">idxmax</span><span class="p">()</span>
+<span class="n">baseline_test</span> <span class="o">=</span> <span class="n">baseline_test_counts</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_test</span><span class="p">)</span>
+
 <span class="n">train_acc</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">train_pred</span><span class="p">)</span>
 <span class="n">test_acc</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">test_pred</span><span class="p">)</span>
 <span class="n">precision_pos</span> <span class="o">=</span> <span class="n">precision_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">test_pred</span><span class="p">,</span> <span class="n">pos_label</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -9193,12 +9197,15 @@ threshold scenario for business-sensitive recall.</p>
 <span class="n">f1_pos</span> <span class="o">=</span> <span class="n">f1_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">test_pred</span><span class="p">,</span> <span class="n">pos_label</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">roc_auc</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">test_proba</span><span class="p">)</span>
 <span class="n">pr_auc</span> <span class="o">=</span> <span class="n">average_precision_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">test_proba</span><span class="p">)</span>
-<span class="n">improvement_pct</span> <span class="o">=</span> <span class="p">(</span><span class="n">test_acc</span> <span class="o">-</span> <span class="n">baseline_accuracy</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+<span class="n">lift_dataset_pp</span> <span class="o">=</span> <span class="p">(</span><span class="n">test_acc</span> <span class="o">-</span> <span class="n">baseline_accuracy</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+<span class="n">lift_test_pp</span> <span class="o">=</span> <span class="p">(</span><span class="n">test_acc</span> <span class="o">-</span> <span class="n">baseline_test</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Train accuracy: </span><span class="si">{</span><span class="n">train_acc</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Test accuracy:  </span><span class="si">{</span><span class="n">test_acc</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Baseline accuracy (always predict </span><span class="si">{</span><span class="n">baseline_label</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">baseline_accuracy</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Accuracy lift vs. baseline: </span><span class="si">{</span><span class="n">improvement_pct</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> percentage points"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Baseline accuracy (dataset, always predict </span><span class="si">{</span><span class="n">baseline_label</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">baseline_accuracy</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Accuracy lift vs dataset baseline: </span><span class="si">{</span><span class="n">lift_dataset_pp</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> pp"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Baseline accuracy (test only, always predict </span><span class="si">{</span><span class="n">baseline_test_label</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">baseline_test</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Accuracy lift vs baseline(test): </span><span class="si">{</span><span class="n">lift_test_pp</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> pp"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Precision (class 1): </span><span class="si">{</span><span class="n">precision_pos</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Recall (class 1):    </span><span class="si">{</span><span class="n">recall_pos</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"F1 (class 1):        </span><span class="si">{</span><span class="n">f1_pos</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
@@ -9227,6 +9234,7 @@ threshold scenario for business-sensitive recall.</p>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Threshold 0.35 -&gt; precision: </span><span class="si">{</span><span class="n">precision_alt</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, recall: </span><span class="si">{</span><span class="n">recall_alt</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">"Test confusion matrix @ threshold 0.35:"</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">cm_alt</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Si priorizamos captar fumadores, 0.35 sube el recall a </span><span class="si">{</span><span class="n">recall_alt</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> a costa de más falsos positivos; el umbral debe elegirse según el costo/beneficio."</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -9241,8 +9249,10 @@ threshold scenario for business-sensitive recall.</p>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>Train accuracy: 0.79
 Test accuracy:  0.78
-Baseline accuracy (always predict 0): 0.76
-Accuracy lift vs. baseline: 2.13 percentage points
+Baseline accuracy (dataset, always predict 0): 0.76
+Accuracy lift vs dataset baseline: 2.13 pp
+Baseline accuracy (test only, always predict 0): 0.76
+Accuracy lift vs baseline(test): 2.15 pp
 Precision (class 1): 0.57
 Recall (class 1):    0.34
 F1 (class 1):        0.43
@@ -9344,6 +9354,13 @@ Test confusion matrix @ threshold 0.35:
 </div>
 </div>
 </div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Si priorizamos captar fumadores, 0.35 sube el recall a 0.55 a costa de más falsos positivos; el umbral debe elegirse según el costo/beneficio.
+</pre>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -9363,7 +9380,7 @@ model so the coefficients align with the earlier preprocessing steps.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [12]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Part (e) - prediction for a new individual</span>
@@ -9376,6 +9393,7 @@ model so the coefficients align with the earlier preprocessing steps.</p>
 <span class="n">new_scaled</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">new_person</span><span class="p">[</span><span class="n">feature_cols</span><span class="p">])</span>
 <span class="n">p_smoker</span> <span class="o">=</span> <span class="n">log_reg_model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">new_scaled</span><span class="p">)[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 <span class="n">pred_label</span> <span class="o">=</span> <span class="n">log_reg_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">new_scaled</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Clase 1 = smoker."</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Predicted class (1=smoker): </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">pred_label</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Estimated probability of smoking: </span><span class="si">{</span><span class="n">p_smoker</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
@@ -9390,10 +9408,28 @@ model so the coefficients align with the earlier preprocessing steps.</p>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Predicted class (1=smoker): 1
+<pre>Clase 1 = smoker.
+Predicted class (1=smoker): 1
 Estimated probability of smoking: 0.60
 </pre>
 </div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=765c252e">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Resumen-ejecutivo">Resumen ejecutivo<a class="anchor-link" href="#Resumen-ejecutivo">¶</a></h3><ul>
+<li>Q1: p=0.18, horas=70, odds=0.22</li>
+<li>Q2: 0.25 y 0.29/0.71</li>
+<li>Q3: SV=[1,2,7,8,9,11,12], hinge no-mis=[1,2,7,8,9], mis=[11,12]</li>
+<li>Q4: train=0.79, test=0.78, ROC-AUC=0.81, PR-AUC=0.55; @0.35: P=0.51/R=0.55</li>
+<li>Caso 48 años: clase=1, p=0.60</li>
+</ul>
 </div>
 </div>
 </div>
