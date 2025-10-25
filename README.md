@@ -27,7 +27,11 @@ Introductory notebooks, datasets, and assignment handouts for an "Intro to Conce
 | `3 Decision Tree_with solution.ipynb` | Decision tree modeling workflow | Covers train/test splits and model evaluation. |
 | `4 Linear Regression_with solution.ipynb` | Linear regression with scikit-learn vs. statsmodels | Highlights interpretation vs. prediction use-cases. |
 | `5 Logistic Regression_Student.ipynb` | Logistic regression template | Partially scaffolded; intended for in-class or homework completion. |
+| `6 SVM and Regularization_Student.ipynb` | Support Vector Machines and margin tuning | Works with custom SVM datasets and compares kernel choices. |
+| `8 KNN  Kmeans_Student.ipynb` | k-Nearest Neighbors and k-Means clustering | Introduces distance-based models and unsupervised workflows. |
 | `Assignment 1.ipynb` | Decision-tree case study assignment | Mirrors the PDF prompt and references the churn dataset. |
+| `Assignment 2.ipynb` | Logistic vs. tree-based churn modeling | Expands on Assignment 1 with feature engineering practice. |
+| `Midterm.ipynb` | Cumulative midterm practice | Mix of theory refresh and code prompts pulled from the cheat sheets. |
 
 Companion HTML exports (e.g., `Assignment1 De Isa.html`, `Assignment2 De Isa.html`) capture rendered notebook output for quick review without running code.
 
@@ -40,11 +44,18 @@ Companion HTML exports (e.g., `Assignment1 De Isa.html`, `Assignment2 De Isa.htm
 | `house_price.csv` | dist, age, room, school, price | Simple regression with numeric features. |
 | `mushroom.csv` | Edibility plus 19 categorical attributes | Multi-class preprocessing and classification. |
 | `smoking.csv` | Smoker status, bans, demographics | Logistic regression and policy analysis. |
+| `svm_data1.csv` | Two-class SVM toy data | Linearly separable example for margin intuition. |
+| `svm_data2.csv` | Two-class SVM toy data | Non-linearly separable set for kernel exploration. |
+| `Wholesale_customers_v2.csv` | Channel, region, product spending | Clustering demo dataset for the k-means notebook. |
 
 ### Reference Material
 
 - `Assignment 1 Questions (1).pdf` - Instructions and rubric for the first assignment.
 - `Assignment2 Questions.pdf` - Worksheet for the second assignment.
+- `Midterm (q21+) - Coding Cheat Sheet (quick, Queryable, Copypaste Ready).docx` - Handy snippets for the coding portion of the midterm.
+- `Econ7880 Midterm Theory Cheat Sheet (q1-20).docx` - Theory flash cards covering the conceptual questions.
+- `MidtermTest.PDF`, `Mhhs4GmNsxb.PDF` - Shared sample midterm prompts for extra practice.
+- `Midterm.html` - Rendered version of the midterm practice notebook.
 
 ## Recommended Workflow
 
