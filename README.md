@@ -1,76 +1,115 @@
-# Exchange Data Concepts
+﻿# Exchange Data Concepts
 
-Introductory notebooks, datasets, and assignment handouts for an "Intro to Concepts for Big Data" course. The material walks through exploratory data analysis, classical machine learning models, and practice assignments using Python, NumPy, pandas, and scikit-learn inside Jupyter notebooks.
+Curated notebooks, datasets, lecture decks, and reference material for an "Intro to Concepts for Big Data" course covering exploratory analysis through classical machine learning projects in Python.
+
+## Highlights
+- Structured end-to-end path: foundation tutorials -> supervised models -> assignments -> capstone prep.
+- Side-by-side student + solution notebooks to support both instruction and self-paced study.
+- Shared CSVs, lecture PDFs, and HTML/PDF deliverables keep grading and review reproducible.
+
+## Table of Contents
+- [Repository Structure](#repository-structure)
+- [Learning Roadmap](#learning-roadmap)
+- [Quick Start](#quick-start)
+- [Working With Data & Notebooks](#working-with-data--notebooks)
+- [Deliverables & Supporting Material](#deliverables--supporting-material)
+- [Troubleshooting](#troubleshooting)
+- [Contributing & Next Steps](#contributing--next-steps)
+- [Attribution & License](#attribution--license)
+
+## Repository Structure
+
+| Path | What's inside | Highlights |
+| --- | --- | --- |
+| `Code/In Class/` | Core tutorial and assignment notebooks plus the source CSV files. | `2.x` fundamentals, `3-10` modeling labs, `Assignment 1-3`, `Midterm.ipynb`. |
+| `Code/In Class/Deliverables/` | Rendered HTML/PDF submissions, question sheets, cheat sheets. | Ideal for grading, quick review, and sharing exemplar outputs. |
+| `Code/Final Project/` | Starter folders for themed projects (KNN, Loan Defaults). | Use as templates for semester projects or demos. |
+| `Lectures/` | Slide decks that mirror the notebook numbering. | Perfect for lesson prep or recap sessions. |
+| `Textbooks/` | Curated references (PDF/ePub) covering Python, ML, and data mining. | Pair with weekly lecture topics for deeper dives. |
+| `ECON7880 Course Outline_2025Fall_S24.pdf` | Term schedule, grading policy, and logistics. | Keeps pacing aligned with assignments and exams. |
+
+> Tip: keep personal work in new files or branches so the distributed solution notebooks remain untouched.
+
+## Learning Roadmap
+1. **Foundations (`2.x` notebooks)** - Refresh Python syntax, NumPy arrays, and pandas DataFrames with guided examples.
+2. **Classical models (`3-6`, `8-10`)** - Walk through decision trees, linear/logistic regression, SVMs, KNN/K-means, and model evaluation techniques.
+3. **Assignments (`Assignment 1-3`)** - Apply the workflows to business-style prompts that reuse the shared CSVs.
+4. **Evaluation focus (`9`, `10`, cheat sheets)** - Deepen understanding of metrics, ROC/PR curves, and exam-style questions.
+5. **Capstone prep (`Final Project/*`, `Midterm.*`)** - Leverage the project starters and midterm materials for comprehensive assessments.
+
+Feel free to reorder modules to match your syllabus; the dependencies are intentionally light.
 
 ## Quick Start
 
-1. Install Python 3.10+ and Jupyter if they are not already available.
-2. Create and activate a virtual environment (optional but recommended).
-3. Install the core scientific stack:
-   ```bash
-   pip install jupyter numpy pandas matplotlib seaborn scikit-learn
-   ```
-4. Launch Jupyter Lab or Notebook from the project root:
-   ```bash
-   jupyter lab
-   ```
-5. Open any of the `.ipynb` notebooks and run the cells from top to bottom.
+### Requirements
+- Python 3.10 or newer
+- Jupyter Lab or Notebook
+- Recommended: Git, make (or Task) for scripted workflows
 
-## Repository Map
+### Environment Setup (PowerShell)
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install jupyter numpy pandas matplotlib seaborn scikit-learn
+```
+Add any extra packages (e.g., `statsmodels`, `plotly`) as you introduce them. Capture the environment once it is stable:
+```powershell
+pip freeze > requirements.txt
+```
 
-### Notebooks
+### Launch Jupyter
+```powershell
+jupyter lab "Code/In Class"
+# or
+jupyter notebook
+```
+Open a notebook, run cells top-to-bottom, and duplicate the file before experimenting so you keep the upstream solutions intact.
 
-| File | Focus | Notes |
+## Working With Data & Notebooks
+
+All datasets live beside the teaching notebooks inside `Code/In Class/`. Load them relative to that directory to keep paths portable:
+
+```python
+from pathlib import Path
+import pandas as pd
+
+data_dir = Path("Code") / "In Class"
+churn = pd.read_csv(data_dir / "churn.csv")
+```
+
+| Dataset (path) | Primary topic | Typical exercise |
 | --- | --- | --- |
-| `2.1 Data Type and Structure_with solution.ipynb` | Python/numpy data types and array manipulations | Includes solved practice prompts. |
-| `2.2 Pandas DataFrame_with solution.ipynb` | Building and slicing pandas DataFrames | Demonstrates indexing, aggregation, and joins. |
-| `3 Decision Tree_with solution.ipynb` | Decision tree modeling workflow | Covers train/test splits and model evaluation. |
-| `4 Linear Regression_with solution.ipynb` | Linear regression with scikit-learn vs. statsmodels | Highlights interpretation vs. prediction use-cases. |
-| `5 Logistic Regression_Student.ipynb` | Logistic regression template | Partially scaffolded; intended for in-class or homework completion. |
-| `6 SVM and Regularization_Student.ipynb` | Support Vector Machines and margin tuning | Works with custom SVM datasets and compares kernel choices. |
-| `8 KNN  Kmeans_Student.ipynb` | k-Nearest Neighbors and k-Means clustering | Introduces distance-based models and unsupervised workflows. |
-| `Assignment 1.ipynb` | Decision-tree case study assignment | Mirrors the PDF prompt and references the churn dataset. |
-| `Assignment 2.ipynb` | Logistic vs. tree-based churn modeling | Expands on Assignment 1 with feature engineering practice. |
-| `Midterm.ipynb` | Cumulative midterm practice | Mix of theory refresh and code prompts pulled from the cheat sheets. |
+| `Code/In Class/advertising.csv` | Multi-feature regression | Marketing spend vs. sales forecasting. |
+| `Code/In Class/churn.csv` | Binary classification | Assignments 1 & 2 (decision trees vs. logistic). |
+| `Code/In Class/house_price.csv` | Numeric regression | Feature scaling and interpretation practice. |
+| `Code/In Class/mushroom.csv` | Categorical preprocessing | One-hot encoding and multi-class modeling. |
+| `Code/In Class/smoking.csv` | Policy analytics | Logistic regression with survey data. |
+| `Code/In Class/svm_data1.csv` / `svm_data2.csv` | Margin intuition | Linear vs. kernelized SVM demos. |
+| `Code/In Class/Wholesale_customers_v2.csv` | Clustering | K-means segment discovery. |
 
-Companion HTML exports (e.g., `Assignment1 De Isa.html`, `Assignment2 De Isa.html`) capture rendered notebook output for quick review without running code.
+Export polished work through *File -> Export Notebook As...* to create the HTML/PDF artifacts you see under `Deliverables/`.
 
-### Datasets
+## Deliverables & Supporting Material
+- `Code/In Class/Deliverables/*.html|pdf` - Reference submissions for assignments and the midterm.
+- `Assignment* Questions*.pdf` - Student-facing prompts and rubrics.
+- `Midterm (q21+) - Coding Cheat Sheet...docx`, `Econ7880 Midterm Theory Cheat Sheet...docx` - Quick lookup tables for exam prep.
+- `Lectures/*.pdf` - Slides that align with each in-class lab.
+- `Textbooks/*.pdf|epub` - Optional reading to reinforce weekly topics.
 
-| File | Columns (first row) | Typical Use |
-| --- | --- | --- |
-| `advertising.csv` | TV, Radio, Newspaper, Sales | Multi-feature regression practice. |
-| `churn.csv` | Customer demographics, usage, churn flag | Classification exercises (assignment 1). |
-| `house_price.csv` | dist, age, room, school, price | Simple regression with numeric features. |
-| `mushroom.csv` | Edibility plus 19 categorical attributes | Multi-class preprocessing and classification. |
-| `smoking.csv` | Smoker status, bans, demographics | Logistic regression and policy analysis. |
-| `svm_data1.csv` | Two-class SVM toy data | Linearly separable example for margin intuition. |
-| `svm_data2.csv` | Two-class SVM toy data | Non-linearly separable set for kernel exploration. |
-| `Wholesale_customers_v2.csv` | Channel, region, product spending | Clustering demo dataset for the k-means notebook. |
+Use these artifacts to set expectations, grade consistently, or offer make-up material.
 
-### Reference Material
+## Troubleshooting
+- **Missing packages** - Reactivate your virtual environment and re-run the `pip install` commands above.
+- **Kernel hiccups** - Restart the kernel (Kernel -> Restart & Clear Output) after altering file paths or upgrading libraries.
+- **File path errors** - Prefer forward slashes or `Path` objects in Python to stay OS-agnostic.
+- **Large CSV performance** - Use chunked reads (`pd.read_csv(..., chunksize=5000)`) or sample rows when demonstrating concepts live.
 
-- `Assignment 1 Questions (1).pdf` - Instructions and rubric for the first assignment.
-- `Assignment2 Questions.pdf` - Worksheet for the second assignment.
-- `Midterm (q21+) - Coding Cheat Sheet (quick, Queryable, Copypaste Ready).docx` - Handy snippets for the coding portion of the midterm.
-- `Econ7880 Midterm Theory Cheat Sheet (q1-20).docx` - Theory flash cards covering the conceptual questions.
-- `MidtermTest.PDF`, `Mhhs4GmNsxb.PDF` - Shared sample midterm prompts for extra practice.
-- `Midterm.html` - Rendered version of the midterm practice notebook.
+## Contributing & Next Steps
+- Track enhancements via issues (e.g., "add tree-based ensemble lab") and document the rationale in notebook headers.
+- Consider adding `environment.yml` or `requirements-lock.txt` once the stack stabilizes for a given semester.
+- When sharing publicly, strip solutions into a separate branch and keep student templates in the default branch.
+- If you create new datasets or case studies, drop them under `Code/In Class/` and update the table above so future cohorts know how to use them.
 
-## Recommended Workflow
-
-- Start with the `2.x` tutorials to refresh Python, NumPy, and pandas fundamentals.
-- Progress to the model-specific walkthroughs (`3`, `4`, `5`) before attempting the assignments.
-- Use the provided CSVs directly from the repository root (`pd.read_csv('advertising.csv')`, etc.).
-- Save personal work under new filenames to preserve the distributed solutions.
-- Export notebooks to HTML or PDF for submission using `File > Export Notebook As...`.
-
-## Troubleshooting Tips
-
-- If `ModuleNotFoundError` appears, re-run `pip install` inside the active environment.
-- Restart the Jupyter kernel and clear outputs when datasets are reloaded or paths change.
-- On Windows, prefer forward slashes (`data/file.csv`) or raw strings (`r"data\\file.csv"`) when referencing paths.
-
----
-
-This repository is intentionally lightweight and does not track environment locks. For reproducibility across semesters, capture the versions of key libraries (`pip freeze > requirements.txt`) once your environment is stable.
+## Attribution & License
+No explicit open-source license is included. Treat the material as educational content for the ECON7880 course and request permission before redistributing outside the class. If you plan to publish or collaborate broadly, add a LICENSE file (MIT, CC-BY-NC, etc.) and update this section accordingly.
