@@ -187,8 +187,14 @@ def search_best_threshold_arrays(
 
 
 def confusion_counts(y_true: Sequence[int], y_pred: Sequence[int]) -> Dict[str, int]:
-    """Return confusion-matrix counts mapped to a dictionary."""
-    tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
+    """Return confusion-matrix counts mapped to a dictionary.
+
+    Handles degenerate cases where a subset contains only one class by pinning the
+    labels argument so scikit-learn always returns a 2x2 matrix.
+    """
+
+    cm = confusion_matrix(y_true, y_pred, labels=[0, 1])
+    tn, fp, fn, tp = cm.ravel()
     return {"tn": int(tn), "fp": int(fp), "fn": int(fn), "tp": int(tp)}
 
 
